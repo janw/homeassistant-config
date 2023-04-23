@@ -1,0 +1,14 @@
+- name: "Inside warmer than Outside"
+  unique_id: inside_warmer_than_outside
+  state: >-
+    {{
+      states('sensor.indoor_average_temperature') | float(0) >
+      states('sensor.outside_climate_temperature') | float(0)
+    }}
+  availability: >-
+    {{
+      [ states('sensor.indoor_average_temperature'),
+        states('sensor.outside_climate_temperature'),
+      ] | map('is_number') | min
+    }}
+  device_class: heat

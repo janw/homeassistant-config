@@ -1,0 +1,583 @@
+- id: '1645798881997'
+  name: Office Balanced White
+  entities:
+    light.office_ceiling_rectangle:
+      min_mireds: 153
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      color_mode: color_temp
+      brightness: 255
+      color_temp: 229
+      hs_color:
+      - 26.721
+      - 28.617
+      rgb_color:
+      - 255
+      - 214
+      - 182
+      xy_color:
+      - 0.4
+      - 0.358
+      linkquality: 153
+      update:
+        state: idle
+      update_available: false
+      friendly_name: office_ceiling_rectangle
+      supported_features: 47
+      state: 'on'
+    light.office_cabinet_color_strip:
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: color_temp
+      brightness: 255
+      color_temp: 189
+      hs_color:
+      - 27.423
+      - 15.428
+      rgb_color:
+      - 255
+      - 233
+      - 215
+      xy_color:
+      - 0.362
+      - 0.346
+      linkquality: 117
+      update:
+        state:
+      update_available:
+      friendly_name: office_cabinet_color_strip
+      supported_features: 63
+      state: 'on'
+    light.office_color_lamp:
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - xy
+      color_mode: xy
+      brightness: 255
+      hs_color:
+      - 270.824
+      - 100
+      rgb_color:
+      - 131
+      - 0
+      - 255
+      xy_color:
+      - 0.217
+      - 0.077
+      color:
+        x: 0.217
+        y: 0.077
+      linkquality: 87
+      update:
+        state:
+      update_available:
+      friendly_name: office_color_lamp
+      supported_features: 61
+      state: 'on'
+    light.shapes_57f7:
+      min_mireds: 154
+      max_mireds: 833
+      effect_list:
+      - Beatdrop
+      - Blaze
+      - Cocoa Beach
+      - Cotton Candy
+      - Date Night
+      - Hip Hop
+      - Hot Sauce
+      - Jungle
+      - Lightscape
+      - Morning Sky
+      - Northern Lights
+      - Pop Rocks
+      - Prism
+      - Starlight
+      - Sundown
+      - Waterfall
+      - Try this before you skip it
+      - Relaxing neon
+      supported_color_modes:
+      - color_temp
+      - hs
+      color_mode: hs
+      brightness: 188
+      hs_color:
+      - 0
+      - 0
+      rgb_color:
+      - 255
+      - 255
+      - 255
+      xy_color:
+      - 0.323
+      - 0.329
+      effect: Relaxing neon
+      icon: mdi:triangle-outline
+      friendly_name: Shapes 57F7
+      supported_features: 36
+      state: 'on'
+  metadata:
+    light.office_color_lamp:
+      entity_only: false
+    light.office_ceiling_rectangle:
+      entity_only: false
+    light.office_cabinet_color_strip:
+      entity_only: false
+    light.shapes_57f7:
+      entity_only: false
+- id: '1645799495032'
+  name: Office Dark And Red
+  entities:
+    light.office_ceiling_rectangle:
+      min_mireds: 153
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      color_mode: color_temp
+      brightness: 26
+      color_temp: 454
+      hs_color:
+      - 29.79
+      - 84.553
+      rgb_color:
+      - 255
+      - 146
+      - 39
+      xy_color:
+      - 0.579
+      - 0.388
+      linkquality: 153
+      update:
+        state: idle
+      update_available: false
+      friendly_name: office_ceiling_rectangle
+      supported_features: 47
+      state: 'on'
+    light.office_color_lamp:
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - xy
+      color_mode: xy
+      brightness: 255
+      hs_color:
+      - 0
+      - 100
+      rgb_color:
+      - 255
+      - 0
+      - 0
+      xy_color:
+      - 0.701
+      - 0.299
+      color:
+        x: 0.701
+        y: 0.299
+      linkquality: 84
+      update:
+        state:
+      update_available:
+      friendly_name: office_color_lamp
+      supported_features: 61
+      state: 'on'
+    light.office_cabinet_color_strip:
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: xy
+      brightness: 255
+      hs_color:
+      - 0
+      - 100
+      rgb_color:
+      - 255
+      - 0
+      - 0
+      xy_color:
+      - 0.701
+      - 0.299
+      linkquality: 120
+      update:
+        state:
+      update_available:
+      friendly_name: office_cabinet_color_strip
+      supported_features: 63
+      color:
+        x: 0.701
+        y: 0.299
+      state: 'on'
+    light.shapes_57f7:
+      min_mireds: 154
+      max_mireds: 833
+      effect_list:
+      - Beatdrop
+      - Blaze
+      - Cocoa Beach
+      - Cotton Candy
+      - Date Night
+      - Hip Hop
+      - Hot Sauce
+      - Jungle
+      - Lightscape
+      - Morning Sky
+      - Northern Lights
+      - Pop Rocks
+      - Prism
+      - Starlight
+      - Sundown
+      - Waterfall
+      - Try this before you skip it
+      - Relaxing neon
+      - Sparrows
+      supported_color_modes:
+      - color_temp
+      - hs
+      color_mode: hs
+      brightness: 99
+      hs_color:
+      - 360
+      - 100
+      rgb_color:
+      - 255
+      - 0
+      - 0
+      xy_color:
+      - 0.701
+      - 0.299
+      icon: mdi:triangle-outline
+      friendly_name: Shapes 57F7
+      supported_features: 36
+      effect:
+      - Beatdrop
+      - Blaze
+      - Cocoa Beach
+      - Cotton Candy
+      - Date Night
+      - Hip Hop
+      - Hot Sauce
+      - Jungle
+      - Lightscape
+      - Morning Sky
+      - Northern Lights
+      - Pop Rocks
+      - Prism
+      - Starlight
+      - Sundown
+      - Waterfall
+      - Try this before you skip it
+      - Relaxing neon
+      - Sparrows
+      - Netflix And Chill
+      state: 'on'
+  metadata:
+    light.office_color_lamp:
+      entity_only: false
+    light.office_ceiling_rectangle:
+      entity_only: false
+    light.office_cabinet_color_strip:
+      entity_only: false
+    light.shapes_57f7:
+      entity_only: false
+- id: '1659979943655'
+  name: 'Living Room: TV night'
+  entities:
+    light.livingroom_floor_lamp:
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - brightness
+      linkquality: 69
+      update:
+        state: available
+      update_available: true
+      friendly_name: livingroom_floor_lamp
+      supported_features: 45
+      color_mode: brightness
+      brightness: 13
+      state: 'on'
+    light.livingroom_ceiling_lamp:
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - brightness
+      linkquality: 69
+      update:
+        state: idle
+      update_available: false
+      friendly_name: livingroom_ceiling_lamp
+      supported_features: 45
+      color_mode: brightness
+      brightness: 13
+      state: 'on'
+  icon: mdi:television-classic
+  metadata:
+    light.livingroom_floor_lamp:
+      entity_only: false
+    light.livingroom_ceiling_lamp:
+      entity_only: false
+- id: '1662832127354'
+  name: Hallway Balanced
+  entities:
+    light.hallway_ceiling_rectangle:
+      min_mireds: 153
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      linkquality: 138
+      update:
+        state: idle
+      update_available: false
+      friendly_name: hallway_ceiling_rectangle
+      supported_features: 47
+      color_mode: color_temp
+      brightness: 255
+      color_temp: 397
+      hs_color:
+      - 28.827
+      - 71.874
+      rgb_color:
+      - 255
+      - 159
+      - 71
+      xy_color:
+      - 0.546
+      - 0.389
+      state: 'on'
+    light.hallway_ceiling_square:
+      min_mireds: 153
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      color_temp_startup: 65535
+      linkquality: 81
+      update:
+        state: idle
+      update_available: false
+      friendly_name: hallway_ceiling_square
+      supported_features: 47
+      color_mode: color_temp
+      brightness: 127
+      color_temp: 394
+      hs_color:
+      - 28.776
+      - 71.163
+      rgb_color:
+      - 255
+      - 160
+      - 73
+      xy_color:
+      - 0.543
+      - 0.389
+      state: 'on'
+  metadata:
+    light.hallway_ceiling_rectangle:
+      entity_only: false
+    light.hallway_ceiling_square:
+      entity_only: false
+- id: '1662832315748'
+  name: Hallway Balanced Dimmed
+  entities:
+    light.hallway_ceiling_rectangle:
+      min_mireds: 153
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      linkquality: 135
+      update:
+        state: idle
+      update_available: false
+      friendly_name: hallway_ceiling_rectangle
+      supported_features: 47
+      color_mode: color_temp
+      brightness: 152
+      color_temp: 397
+      hs_color:
+      - 28.827
+      - 71.874
+      rgb_color:
+      - 255
+      - 159
+      - 71
+      xy_color:
+      - 0.546
+      - 0.389
+      state: 'on'
+    light.hallway_ceiling_square:
+      min_mireds: 153
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      color_temp_startup: 65535
+      linkquality: 66
+      update:
+        state: idle
+      update_available: false
+      friendly_name: hallway_ceiling_square
+      supported_features: 47
+      color_mode: color_temp
+      brightness: 102
+      color_temp: 394
+      hs_color:
+      - 28.776
+      - 71.163
+      rgb_color:
+      - 255
+      - 160
+      - 73
+      xy_color:
+      - 0.543
+      - 0.389
+      state: 'on'
+  metadata:
+    light.hallway_ceiling_rectangle:
+      entity_only: false
+    light.hallway_ceiling_square:
+      entity_only: false
+- id: '1674490507005'
+  name: 'Living Room: Lively'
+  entities:
+    light.livingroom_floor_lamp:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 4000
+      min_mireds: 250
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      linkquality: 72
+      power_on_behavior:
+      update:
+        installed_version: 587814449
+        latest_version: 587814449
+        state: idle
+      update_available: false
+      friendly_name: livingroom_floor_lamp
+      supported_features: 44
+      color_mode: color_temp
+      brightness: 255
+      color_temp_kelvin: 2202
+      color_temp: 454
+      hs_color:
+      - 29.79
+      - 84.553
+      rgb_color:
+      - 255
+      - 146
+      - 39
+      xy_color:
+      - 0.579
+      - 0.388
+      state: 'on'
+    light.livingroom_ceiling_lamp:
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - brightness
+      linkquality: 78
+      power_on_behavior:
+      update:
+        installed_version: 16784922
+        latest_version: 16784922
+        state: idle
+      update_available: false
+      friendly_name: livingroom_ceiling_lamp
+      supported_features: 44
+      color_mode: brightness
+      brightness: 167
+      state: 'on'
+  icon: mdi:brightness-7
+  metadata: {}

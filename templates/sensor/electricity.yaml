@@ -1,0 +1,63 @@
+- name: "Electricity Consumption"
+  unique_id: electricity_consumption
+  state: >-
+    {{
+      [ states('sensor.p1_energy'),
+        states('sensor.p2_energy'),
+        states('sensor.p3_energy'),
+      ] | map('float', 0) | sum
+    }}
+  availability: >-
+    {{
+      [ states('sensor.p1_energy'),
+        states('sensor.p2_energy'),
+        states('sensor.p3_energy'),
+      ] | map('is_number') | min
+    }}
+  unit_of_measurement: kWh
+  device_class: energy
+  state_class: total_increasing
+
+- name: "CO2 saved with green electricity"
+  unique_id: co2_saved_with_green_electricity
+  state: >-
+    {{ states('sensor.electricity_consumption') | float(0)
+      * (states('sensor.co2_intensity') | float(0)) * 0.001
+    }}
+  availability: >-
+    {{
+      [ states('sensor.electricity_consumption'),
+        states('sensor.co2_intensity'),
+      ] | map('is_number') | min
+    }}
+  unit_of_measurement: kgCO2eq
+  state_class: total_increasing
+
+- name: "Electricity Power"
+  unique_id: electricity_power
+  state: >-
+    {{
+      [ states('sensor.p1_power'),
+        states('sensor.p2_power'),
+        states('sensor.p3_power'),
+      ] | map('float', 0) | sum
+    }}
+  availability: >-
+    {{
+      [ states('sensor.p1_power'),
+        states('sensor.p2_power'),
+        states('sensor.p3_power'),
+      ] | map('is_number') | min
+    }}
+  unit_of_measurement: W
+  device_class: power
+  state_class: measurement
+
+- name: "Kilowatt-hour Rate"
+  unique_id: kilowatt_hour_rate
+  state: >-
+    {{
+      states('input_text.kilowatt_hour_rate_in_cents') | float(0) / 100
+    }}
+  unit_of_measurement: €/kWh
+  state_class: measurement

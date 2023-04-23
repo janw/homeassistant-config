@@ -1,0 +1,6 @@
+- name: Everybody is away
+  unique_id: everybody_is_away
+  state: >-
+    {{ states.person | map(attribute='state') | unique | list == ["not_home"] }}
+  availability: >-
+    {{  states.person | map(attribute='state') | list | length > 0 }}

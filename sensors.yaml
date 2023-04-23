@@ -1,0 +1,49 @@
+- platform: statistics
+  name: "Bedroom brightness over 60 minutes"
+  entity_id: sensor.bedroom_brightness_illuminance_lux
+  state_characteristic: median
+  max_age:
+    minutes: 60
+  sampling_size: 500
+  precision: 0
+
+- platform: statistics
+  name: "Kitchen brightness over 60 minutes"
+  entity_id: sensor.kitchen_brightness_illuminance_lux
+  state_characteristic: median
+  max_age:
+    minutes: 60
+  sampling_size: 500
+  precision: 0
+
+- platform: statistics
+  name: "Office brightness over 60 minutes"
+  entity_id: sensor.office_brightness_illuminance_lux
+  state_characteristic: median
+  max_age:
+    minutes: 60
+  sampling_size: 500
+  precision: 0
+
+- platform: statistics
+  name: "LivingRoom brightness over 60 minutes"
+  entity_id: sensor.livingroom_brightness_illuminance_lux
+  state_characteristic: median
+  max_age:
+    minutes: 60
+  sampling_size: 500
+  precision: 0
+
+- platform: time_date
+  display_options:
+    - "time"
+    - "date"
+    - "date_time"
+
+- platform: history_stats
+  name: Time worked today
+  entity_id: switch.office_desk_setup
+  state: "on"
+  type: time
+  start: "{{ now().replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(hours=1) }}"
+  end: "{{ now().replace(hour=23, minute=59, second=59, microsecond=0) - timedelta(hours=1) }}"

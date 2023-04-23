@@ -1,0 +1,21 @@
+kitchen_vol_down:
+  alias: "Kitchen: Vol down 8%"
+  icon: mdi:volume-minus
+  mode: queued
+  max: 5
+  sequence:
+    - data_template:
+        volume_level: "{{ states.media_player.kitchen.attributes.volume_level - 0.08}}"
+      entity_id: media_player.kitchen
+      service: media_player.volume_set
+
+kitchen_vol_up:
+  alias: "Kitchen: Vol up 8%"
+  icon: mdi:volume-plus
+  mode: queued
+  max: 5
+  sequence:
+    - data_template:
+        volume_level: "{{ states.media_player.kitchen.attributes.volume_level + 0.08}}"
+      entity_id: media_player.kitchen
+      service: media_player.volume_set

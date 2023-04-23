@@ -1,0 +1,45 @@
+office_covers_up_5:
+  alias: "Office: Covers down 5%"
+  mode: single
+  sequence:
+    - service: cover.set_cover_position
+      data:
+        position: "{{ state_attr('cover.rolladen_buero', 'current_position') - 5
+          }}
+
+          "
+      entity_id: cover.rolladen_buero
+
+office_covers_up_5_2:
+  alias: "Office: Covers up 5%"
+  mode: single
+  sequence:
+    - service: cover.set_cover_position
+      data:
+        position: "{{ state_attr('cover.rolladen_buero', 'current_position') + 5
+          }}
+
+          "
+      entity_id: cover.rolladen_buero
+
+office_vol_up:
+  alias: "Office: Vol up 8%"
+  icon: mdi:volume-plus
+  mode: queued
+  max: 5
+  sequence:
+    - data_template:
+        volume_level: "{{ states.media_player.office.attributes.volume_level + 0.08}}"
+      entity_id: media_player.office
+      service: media_player.volume_set
+
+office_vol_down:
+  alias: "Office: Vol down 8%"
+  icon: mdi:volume-minus
+  mode: queued
+  max: 5
+  sequence:
+    - data_template:
+        volume_level: "{{ states.media_player.office.attributes.volume_level - 0.08}}"
+      entity_id: media_player.office
+      service: media_player.volume_set

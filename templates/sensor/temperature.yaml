@@ -1,0 +1,21 @@
+- name: "Indoor Average Temperature"
+  unique_id: indoor_average_temperature
+  state: >-
+    {{
+      [ states('sensor.bedroom_climate_temperature'),
+        states('sensor.livingroom_climate_temperature'),
+        states('sensor.kitchen_climate_temperature'),
+        states('sensor.office_climate_temperature'),
+      ] | map('float', 0) | average | round(1)
+    }}
+  availability: >-
+    {{
+      [ states('sensor.bedroom_climate_temperature'),
+        states('sensor.livingroom_climate_temperature'),
+        states('sensor.kitchen_climate_temperature'),
+        states('sensor.office_climate_temperature'),
+      ] | map('is_number') | min
+    }}
+  unit_of_measurement: °C
+  device_class: temperature
+  state_class: measurement

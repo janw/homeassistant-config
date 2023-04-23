@@ -1,0 +1,17 @@
+secrets.yaml
+*.db
+*.log
+*.log.*
+
+.storage
+.cloud
+.vscode
+
+themes
+tts
+core
+
+www/community/
+backups/
+esphome/
+zigbee2mqtt/

@@ -1,0 +1,62 @@
+recursive_covers_down_on_high_brightness:
+  alias: Recursive Covers down on high brightness
+  mode: single
+  sequence:
+    - repeat:
+        while:
+          - condition: state
+            entity_id: sensor.office_brightness_above_max_threshold
+            state: "True"
+          - condition: numeric_state
+            entity_id: cover.rolladen_buero
+            attribute: current_position
+            above: "20"
+          - condition: time
+            after: 07:00
+            before: "20:00"
+        sequence:
+          - service: cover.set_cover_position
+            data:
+              position:
+                "{{ state_attr('cover.rolladen_buero', 'current_position')
+                - 5 }}
+
+                "
+            entity_id: cover.rolladen_buero
+          - wait_for_trigger:
+              - platform: state
+                entity_id: sensor.office_brightness_illuminance_lux
+            timeout: "120"
+            continue_on_timeout: true
+
+recursive_covers_up_on_low_brightness:
+  alias: Recursive Covers up on low brightness
+  mode: single
+  sequence:
+    - repeat:
+        while:
+          - condition: state
+            entity_id: sensor.office_brightness_below_min_threshold
+            state: "True"
+          - condition: numeric_state
+            entity_id: cover.rolladen_buero
+            attribute: current_position
+            below: "98"
+            above: "20"
+          - condition: time
+            after: 07:00:00
+            before: "20:30"
+        sequence:
+          - service: cover.set_cover_position
+            data:
+              position:
+                "{{ state_attr('cover.rolladen_buero', 'current_position')
+                + 5 }}
+
+                "
+            entity_id: cover.rolladen_buero
+          - wait_for_trigger:
+              - platform: state
+                entity_id: sensor.office_brightness_illuminance_lux
+            timeout: "120"
+            continue_on_timeout: true

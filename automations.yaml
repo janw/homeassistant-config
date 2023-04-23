@@ -1,0 +1,917 @@
+- id: '1607123167124'
+  alias: 'Bedroom: Schlafmodus / manuell Aufwachen'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.bett_clicker_click
+    to: double
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: time
+        after: 06:00:00
+        before: '13:00'
+      sequence:
+      - service: script.wakeup_settings
+        data: {}
+    default:
+    - service: script.sleep_settings
+      data: {}
+  mode: single
+- id: '1632209627051'
+  alias: 'Office: Webcam Off'
+  description: Used in a webhook on my work machine
+  trigger:
+  - platform: webhook
+    webhook_id: webcam-turned-off
+    id: webcam-turned-off
+  condition: []
+  action:
+  - service: light.turn_off
+    data:
+      transition: 3
+    target:
+      device_id: 8f84bb4d1d4cd5a5b86f10b121531dbd
+  mode: single
+- id: '1632209931297'
+  alias: 'Office: Webcam On'
+  description: Used in a webhook on my work machine
+  trigger:
+  - platform: webhook
+    webhook_id: webcam-turned-on
+    id: webcam-turned-on
+  condition: []
+  action:
+  - service: light.turn_on
+    data:
+      transition: 1
+    target:
+      device_id: 8f84bb4d1d4cd5a5b86f10b121531dbd
+  mode: single
+- id: '1643651020752'
+  alias: 'Bedroom: Morning Alarm'
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.morning_alarm_time
+  condition:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.morning_alarm_weekdays_only
+      state: 'off'
+  action:
+  - service: script.wakeup_settings
+    data: {}
+  mode: single
+- id: '1643806053017'
+  alias: 'Office: Blinds down on high brightness'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.office_brightness_above_max_threshold
+    to: 'True'
+  condition:
+  - condition: state
+    entity_id: input_boolean.feierabend_mode
+    state: 'off'
+  - condition: numeric_state
+    entity_id: cover.rolladen_buero
+    attribute: current_position
+    above: '5'
+  action:
+  - service: script.recursive_covers_down_on_high_brightness
+    data: {}
+  mode: single
+- id: '1643806417022'
+  alias: 'Office: Blinds up on low brightness'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.office_brightness_below_min_threshold
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+    to: 'True'
+  condition:
+  - condition: numeric_state
+    entity_id: cover.rolladen_buero
+    attribute: current_position
+    below: '100'
+  - condition: state
+    entity_id: input_boolean.feierabend_mode
+    state: 'off'
+  action:
+  - service: script.recursive_covers_up_on_low_brightness
+    data: {}
+  mode: single
+- id: '1644013527906'
+  alias: 'Bedroom: Covers up on weekends'
+  description: ''
+  trigger:
+  - platform: time
+    at: 08:55:00
+  condition:
+  - condition: state
+    entity_id: binary_sensor.workday_sensor
+    state: 'off'
+  - condition: numeric_state
+    entity_id: cover.rolladen_schlafzimmer
+    below: '20'
+    attribute: current_position
+  action:
+  - service: cover.set_cover_position
+    data:
+      position: 60
+    target:
+      area_id: 8b06ddeee69b0ecb5c980feec19d9690
+  mode: single
+- id: '1644616611540'
+  alias: 'All: Covers down in the evening'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sun.sun
+    attribute: elevation
+    below: -5
+  condition: []
+  action:
+  - service: cover.set_cover_position
+    data:
+      position: 40
+    target:
+      area_id:
+      - aff8ca80c529a15803f2f7cecd1100f6
+      - 8b06ddeee69b0ecb5c980feec19d9690
+      - a39cb164565b53f6dcdd08f6ad4109c3
+  mode: single
+- id: '1644656363289'
+  alias: 'Bedroom: Lights off when covers are opened in the morning'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: cover.rolladen_schlafzimmer
+    above: '99'
+    attribute: current_position
+  condition:
+  - condition: time
+    before: '13:00:00'
+  action:
+  - service: light.turn_off
+    data: {}
+    target:
+      area_id: 8b06ddeee69b0ecb5c980feec19d9690
+  - service: media_player.media_stop
+    data: {}
+    target:
+      area_id: 8b06ddeee69b0ecb5c980feec19d9690
+  mode: single
+- id: '1644684104878'
+  alias: 'Living Room: Dimmed lights at dusk'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sun.sun
+    attribute: elevation
+    below: 0
+  condition: []
+  action:
+  - service: scene.turn_on
+    data:
+      transition: 2
+    target:
+      entity_id: scene.lively
+  mode: single
+- id: '1644701147979'
+  alias: 'All: Covers calibrate and open at dawn'
+  description: ''
+  trigger:
+  - platform: time
+    at: 07:10:00
+  condition:
+  - condition: numeric_state
+    entity_id: cover.rolladen_wohnen
+    attribute: current_position
+    below: '30'
+  action:
+  - service: cover.close_cover
+    data: {}
+    target:
+      area_id:
+      - buro
+      - a39cb164565b53f6dcdd08f6ad4109c3
+      - aff8ca80c529a15803f2f7cecd1100f6
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - service: cover.open_cover
+    data: {}
+    target:
+      device_id:
+      - f5aaf3c391418b50f601b7037114364a
+      - 2089606ae309cb8f2cc32e1913263254
+      - 543aa61c6c9ded91e8c9abd1b9bdd592
+  mode: single
+- id: '1644940645838'
+  alias: 'Hallway: Trigger light on motion'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.hallway_motion_occupancy
+    to: 'on'
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.night_mode
+        state: 'on'
+      sequence:
+      - service: light.turn_on
+        data:
+          transition: 1
+          brightness_pct: 5
+        target:
+          entity_id: light.hallway_group_ceiling
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 30
+          milliseconds: 0
+      - service: light.turn_off
+        data:
+          transition: 1
+        target:
+          entity_id: light.hallway_group_ceiling
+    - conditions:
+      - condition: sun
+        after: sunset
+      - condition: state
+        entity_id: input_boolean.night_mode
+        state: 'off'
+      sequence:
+      - service: scene.turn_on
+        target:
+          entity_id: scene.hallway_balanced_dimmed
+        metadata: {}
+      - delay:
+          hours: 0
+          minutes: 1
+          seconds: 30
+          milliseconds: 0
+      - service: light.turn_off
+        data:
+          transition: 1
+        target:
+          entity_id: light.hallway_group_ceiling
+    default:
+    - service: scene.turn_on
+      target:
+        entity_id: scene.hallway_balanced
+      metadata: {}
+    - delay:
+        hours: 0
+        minutes: 2
+        seconds: 0
+        milliseconds: 0
+    - service: light.turn_off
+      data:
+        transition: 5
+      target:
+        entity_id: light.hallway_group_ceiling
+  mode: restart
+- id: '1644944418901'
+  alias: 'All: Night Mode activate'
+  description: ''
+  trigger:
+  - platform: time
+    at: '23:45'
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.night_mode
+  mode: single
+- id: '1644944471278'
+  alias: 'All: Night Mode deactivate'
+  description: ''
+  trigger:
+  - platform: time
+    at: 09:00
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.night_mode
+  mode: single
+- id: '1644945403068'
+  alias: 'All: Feierabend Mode activate'
+  description: ''
+  trigger:
+  - platform: time
+    at: '17:30'
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.feierabend_mode
+  mode: single
+- id: '1644945435389'
+  alias: 'All: Feierabend Mode deactivate'
+  description: ''
+  trigger:
+  - platform: time
+    at: 06:30
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.feierabend_mode
+  mode: single
+- id: '1645183920431'
+  alias: 'Living Room: Turning on Apple TV dims light'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: media_player.apple_tv
+    from: standby
+  condition:
+  - condition: device
+    type: is_on
+    device_id: 992b27b43f3dcab22c00e2792e8a9ea5
+    entity_id: light.livingroom_ceiling_lamp
+    domain: light
+  action:
+  - service: scene.turn_on
+    target:
+      entity_id: scene.living_room_tv_night
+    metadata: {}
+  mode: single
+- id: '1653041758606'
+  alias: 'Blinds down on high brightness: Bedroom'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.bedroom_brightness_too_high
+    to: 'on'
+    for:
+      minutes: 2
+  condition:
+  - condition: numeric_state
+    entity_id: cover.rolladen_schlafzimmer
+    attribute: current_position
+    above: '90'
+  - condition: numeric_state
+    entity_id: sensor.bedroom_climate_temperature
+    attribute: temperature
+    above: '23.5'
+  action:
+  - service: cover.set_cover_position
+    data:
+      position: 40
+    target:
+      entity_id: cover.rolladen_schlafzimmer
+  mode: single
+- id: '1653041844830'
+  alias: 'Blinds down on high brightness: Living Room'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.livingroom_brightness_too_high
+    to: 'on'
+    for:
+      minutes: 2
+  condition:
+  - condition: numeric_state
+    entity_id: cover.rolladen_wohnen
+    attribute: current_position
+    above: '90'
+  - condition: numeric_state
+    entity_id: sensor.livingroom_climate_temperature
+    attribute: temperature
+    above: '23.5'
+  action:
+  - service: cover.set_cover_position
+    data:
+      position: 40
+    target:
+      entity_id: cover.rolladen_wohnen
+  mode: single
+- id: '1653041876847'
+  alias: 'Blinds down on high brightness: Kitchen'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.kitchen_brightness_too_high
+    to: 'on'
+    for:
+      minutes: 2
+  condition:
+  - condition: numeric_state
+    entity_id: cover.rolladen_kuche
+    attribute: current_position
+    above: '90'
+  - condition: numeric_state
+    entity_id: sensor.kitchen_climate_temperature
+    attribute: temperature
+    above: '23.5'
+  action:
+  - service: cover.set_cover_position
+    data:
+      position: 40
+    target:
+      entity_id: cover.rolladen_kuche
+  mode: single
+- id: '1653041919562'
+  alias: 'Blinds down on high brightness: Office'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.office_brightness_too_high
+    to: 'on'
+    for:
+      minutes: 2
+  condition:
+  - condition: numeric_state
+    entity_id: cover.rolladen_buero
+    attribute: current_position
+    above: '90'
+  - condition: numeric_state
+    entity_id: sensor.office_climate_temperature
+    attribute: temperature
+    above: '23.5'
+  action:
+  - service: cover.set_cover_position
+    data:
+      position: 40
+    target:
+      entity_id: cover.rolladen_buero
+  mode: single
+- id: '1653643874014'
+  alias: Update kilowatt-hour rate to 30,45 ct @ 2022-07-01
+  description: ''
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition:
+  - condition: template
+    value_template: '{{ now().strftime("%Y-%m-%d") == "2022-07-01" }}'
+  action:
+  - service: input_text.set_value
+    data:
+      value: '30.45'
+    target:
+      entity_id: input_text.kilowatt_hour_rate_in_cents
+  mode: single
+- id: '1653653484184'
+  alias: 'Living Room: Toggle from Kitchen Wallswitch'
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: a918e87178a913a69e272bf349f2df35
+    type: action
+    subtype: left_press
+    discovery_id: 0x001788010b005562 action_left_press
+  condition: []
+  action:
+  - service: light.toggle
+    data:
+      brightness_pct: 100
+    target:
+      entity_id:
+      - light.livingroom_ceiling_lamp
+  mode: single
+- id: '1653653627791'
+  alias: 'Kitchen: toggle from Kitchen Wallswitch'
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: a918e87178a913a69e272bf349f2df35
+    type: action
+    subtype: right_press
+    discovery_id: 0x001788010b005562 action_right_press
+  condition: []
+  action:
+  - service: light.toggle
+    data:
+      brightness_pct: 100
+    target:
+      entity_id: light.kitchen_table
+  mode: single
+- id: '1654529230704'
+  alias: 'Office: Toggle from Office Wallswitch'
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 55511db3004fa4dbe0d9a11a0484bee0
+    type: action
+    subtype: left_press
+    discovery_id: 0x001788010b00556d action_left_press
+  condition: []
+  action:
+  - if:
+    - condition: device
+      type: is_off
+      device_id: 54c5aac0e7be451ada8dd8f877224280
+      entity_id: light.office_ceiling_rectangle
+      domain: light
+    then:
+    - service: light.turn_on
+      data:
+        brightness_pct: 100
+        color_temp: 324
+      target:
+        area_id: buro
+    - service: light.turn_on
+      data:
+        effect: Sundown
+        brightness_pct: 50
+      target:
+        device_id: 834b1d832c1b04c8d1855c39ef10aa2a
+    else:
+    - service: light.turn_off
+      data: {}
+      target:
+        area_id: buro
+  mode: single
+- id: '1655226870458'
+  alias: 'All: Start vacuuming when everybody is out'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.everybody_is_away
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  condition:
+  - condition: template
+    value_template: '{{ (as_timestamp(now()) - as_timestamp(states(''sensor.robert_last_clean_end'')))
+      / 3600 > 10}}'
+  action:
+  - service: vacuum.set_fan_speed
+    data:
+      fan_speed: Silent
+    target:
+      device_id: 5d486829a53cbba101116d88cf4d00ef
+  - device_id: 5d486829a53cbba101116d88cf4d00ef
+    domain: vacuum
+    entity_id: vacuum.roborock_vacuum_s5e
+    type: clean
+  - service: notify.mobile_app_jans_iphone
+    data:
+      title: Vacuuming commences
+      message: Everybody left the flat
+      data: {}
+  mode: single
+- id: '1655227568231'
+  alias: 'All: Notify when not vacuumed in N days'
+  description: ''
+  trigger:
+  - platform: time
+    at: '13:00:00'
+  condition:
+  - condition: template
+    value_template: '{{ (as_timestamp(now()) - as_timestamp(states(''sensor.robert_last_clean_end'')))
+      / 3600 > 60 }}
+
+      '
+    enabled: true
+  action:
+  - variables:
+      action_vacuum: '{{ ''VACUUM_'' ~ context.id }}'
+  - service: notify.mobile_app_jans_iphone
+    data:
+      title: Time to vacuum?
+      message: Robert has not vacuumed in 4 days.
+      data:
+        actions:
+        - action: '{{ action_vacuum }}'
+          title: Vacuum now
+  - wait_for_trigger:
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: '{{ action_vacuum }}'
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ wait.trigger.event.data.action == action_vacuum }}'
+      sequence:
+      - service: script.vacuum_all
+        data: {}
+  mode: single
+- id: '1655624114397'
+  alias: 'Bedroom: Skip song'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.bett_clicker_click
+    to: single
+  condition: []
+  action:
+  - service: media_player.media_next_track
+    data: {}
+    target:
+      entity_id: media_player.bedroom
+  mode: single
+- id: '1655715710743'
+  alias: 'Office: Toggle power to desk setup'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.office_desk_switch_action
+    to: double
+  condition: []
+  action:
+  - type: toggle
+    device_id: fb1ba2a9c4466c42fd5817160c88a99e
+    entity_id: switch.office_desk_setup
+    domain: switch
+    metadata:
+      secondary: false
+  mode: single
+- id: '1656868274085'
+  alias: 'Kitchen: Round Multiswitch Next Track'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.kitchen_round_multiswitch_action
+    to: arrow_right_click
+  condition: []
+  action:
+  - service: media_player.media_next_track
+    data: {}
+    target:
+      device_id: aeb8fa1ce7a3c58faeeddbc99af49cdd
+  mode: single
+- id: '1656868303626'
+  alias: 'Kitchen: Round Multiswitch Vol Down'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.kitchen_round_multiswitch_action
+    to: brightness_down_click
+  condition: []
+  action:
+  - service: script.kitchen_vol_down
+    data: {}
+  mode: single
+- id: '1656868366307'
+  alias: 'Kitchen: Round Multiswitch Play/Pause'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.kitchen_round_multiswitch_action
+    to: toggle
+  condition: []
+  action:
+  - service: media_player.media_play_pause
+    data: {}
+    target:
+      device_id: aeb8fa1ce7a3c58faeeddbc99af49cdd
+  mode: single
+- id: '1656868446641'
+  alias: 'Kitchen: Round Multiswitch Prev Track'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.kitchen_round_multiswitch_action
+    to: arrow_left_click
+  condition: []
+  action:
+  - service: media_player.media_previous_track
+    data: {}
+    target:
+      device_id: aeb8fa1ce7a3c58faeeddbc99af49cdd
+  mode: single
+- id: '1656868985886'
+  alias: 'Kitchen: Round Multiswitch Vol Up'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.kitchen_round_multiswitch_action
+    to: brightness_up_click
+  condition: []
+  action:
+  - service: script.kitchen_vol_up
+    data: {}
+  mode: single
+- id: '1658261982584'
+  alias: 'All: Notify when outside cools down in summer'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.inside_warmer_than_outside
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.outside_climate_temperature
+    above: '20'
+  action:
+  - service: notify.mobile_app_jans_iphone
+    data:
+      title: Time to open the windows?
+      message: The outside temperature is now lower than the inside temperature of
+        {{states("sensor.indoor_average_temperature")}} °C.
+      data:
+        push:
+          sound:
+            name: default
+            critical: 1
+            volume: 0.7
+  mode: single
+- id: '1659884030888'
+  alias: 'Bedroom: Lights on by remotes'
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: a9c5ea71829066ec0db9158504c0db7a
+    type: action
+    subtype: on-press
+    discovery_id: 0x0017880102c38a10 action_on-press
+  - platform: device
+    domain: mqtt
+    device_id: 489eea8c1b317a3e18d0ebac88057036
+    type: action
+    subtype: on-press
+    discovery_id: 0x0017880106e95f2a action_on-press
+  condition: []
+  action:
+  - service: light.turn_on
+    data:
+      brightness: 100
+    target:
+      entity_id: light.bedroom_group_all
+  mode: single
+- id: '1659884111774'
+  alias: 'Bedroom: Lights off by remotes'
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: a9c5ea71829066ec0db9158504c0db7a
+    type: action
+    subtype: off-press
+    discovery_id: 0x0017880102c38a10 action_off-press
+  - platform: device
+    domain: mqtt
+    device_id: 489eea8c1b317a3e18d0ebac88057036
+    type: action
+    subtype: off-press
+    discovery_id: 0x0017880106e95f2a action_off-press
+  condition: []
+  action:
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: light.bedroom_group_all
+  mode: single
+- id: '1659904009752'
+  alias: 'Bedroom: Lights on by nightfall'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.sun_elevation
+    below: '-5'
+  condition: []
+  action:
+  - service: light.turn_on
+    data:
+      color_temp: 411
+      brightness_pct: 50
+      transition: 2
+    target:
+      device_id:
+      - a82084045d3ad31bdbec35152bfc9c28
+      - 49eb21f13134d7df552c54b72f0f9ce9
+  mode: single
+- id: '1663439816234'
+  alias: 'Living Room: Turning off Apple TV turns on floor lamp'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - media_player.apple_tv
+    to: standby
+    from: idle
+  condition:
+  - condition: device
+    type: is_off
+    device_id: df5980dc1266c29cc4ec502b3ec9162f
+    entity_id: light.livingroom_floor_lamp
+    domain: light
+  - condition: state
+    entity_id: input_boolean.night_mode
+    state: 'off'
+  action:
+  - service: light.turn_on
+    data:
+      transition: 2
+      brightness_pct: 80
+    target:
+      device_id: df5980dc1266c29cc4ec502b3ec9162f
+  mode: single
+- id: '1665913211894'
+  alias: 'All: Stop vacuuming when somebody comes back'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.everybody_is_away
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 15
+    to: 'off'
+  condition:
+  - condition: device
+    device_id: 5d486829a53cbba101116d88cf4d00ef
+    domain: vacuum
+    entity_id: vacuum.roborock_vacuum_s5e
+    type: is_cleaning
+  action:
+  - device_id: 5d486829a53cbba101116d88cf4d00ef
+    domain: vacuum
+    entity_id: vacuum.roborock_vacuum_s5e
+    type: dock
+  - service: notify.mobile_app_jans_iphone
+    data:
+      title: Robert returning to dock
+      message: Somebody is arriving home
+      data: {}
+  mode: single
+- id: '1681035985330'
+  alias: 'Fallback: Down for the night'
+  description: Fallback automation, when we left the lights on and/or the covers open
+  trigger:
+  - platform: time
+    at: 01:00:00
+  condition:
+  - condition: state
+    entity_id: input_boolean.visitors_mode
+    state: 'off'
+  action:
+  - service: light.turn_off
+    data: {}
+  - if:
+    - condition: numeric_state
+      entity_id: sensor.highest_covers_position
+      above: 20
+    then:
+    - service: cover.set_cover_position
+      data_template:
+        position: '{{ states(''input_number.bedtime_cover_position'') | int }}'
+  mode: single
+- id: '1682192291666'
+  alias: 'Let''s Encrypt: Renew Cert'
+  description: ''
+  trigger:
+  - platform: time
+    at: 02:00:00
+  condition: []
+  action:
+  - service: hassio.addon_start
+    data:
+      addon: core_letsencrypt
+  mode: single
+- id: '1682193059974'
+  alias: Create Backup Nightly
+  description: ''
+  trigger:
+  - platform: time
+    at: 03:00:00
+  condition: []
+  action:
+  - service: hassio.backup_full
+    data: {}
+  mode: single

@@ -1,0 +1,118 @@
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+homeassistant:
+  name: !secret homeassistant_name
+  latitude: !secret homeassistant_latitude
+  longitude: !secret homeassistant_longitude
+
+  unit_system: metric
+  time_zone: Europe/Berlin
+  country: DE
+  allowlist_external_dirs: []
+  customize: !include customize.yaml
+
+frontend:
+  themes: !include_dir_merge_named themes
+
+recorder:
+  auto_purge: false
+  db_url: !secret recorder_db_url
+  commit_interval: 0
+  exclude:
+    domains:
+      - device_tracker
+      - media_player
+      - uptime
+      - time_date
+      - worldclock
+      - scene
+    entity_globs:
+      - binary_sensor.*_update_available
+      - sensor.*_link_quality
+      - sensor.*_battery
+      - sensor.*_reboot
+      - sensor.clock*
+      - sensor.date*
+      - sensor.glances*
+      - sensor.load_*m
+      - sensor.time*
+      - sensor.uptime*
+      - number.*_bass
+      - number.*_treble
+      - number.*_surround_level
+      - number.*_audio_delay
+
+influxdb:
+  host: !secret influxdb_host
+  port: 8086
+  bucket: homeassistant
+  organization: !secret influxdb_organization
+  token: !secret influxdb_token
+  api_version: "2"
+  ssl: false
+
+http:
+  trusted_proxies:
+    - "10.10.10.100"
+    - "172.17.0.0/16"
+    - "172.18.0.0/24"
+    - "172.30.32.0/23"
+  use_x_forwarded_for: true
+
+utility_meter:
+  co2_saved_with_green_electricity_daily:
+    source: sensor.co2_saved_with_green_electricity
+    cycle: daily
+  co2_saved_with_green_electricity_monthly:
+    source: sensor.co2_saved_with_green_electricity
+    cycle: monthly
+  office_desk_setup_energy_daily:
+    source: sensor.office_desk_setup_energy
+    cycle: daily
+  tv_setup_energy_daily:
+    source: sensor.tv_setup_energy
+    cycle: daily
+  ups_plug_total_consumption_daily:
+    source: sensor.ups_plug_total_consumption
+    cycle: daily
+  electricity_consumption_monthly:
+    source: sensor.electricity_consumption
+    cycle: monthly
+  electricity_consumption_yearly:
+    source: sensor.electricity_consumption
+    cron: 0 0 1 6 * # Yearly from June 1
+
+group: !include groups.yaml
+automation: !include automations.yaml
+scene: !include scenes.yaml
+sensor: !include sensors.yaml
+
+script manual: !include_dir_merge_named scripts/
+script ui: !include scripts.yaml
+
+template:
+  - sensor: !include_dir_merge_list templates/sensor/
+  - binary_sensor: !include_dir_merge_list templates/binary_sensor/
+
+input_datetime:
+  morning_alarm_time:
+    name: Morning Alarm Time
+    has_date: false
+    has_time: true
+
+input_boolean:
+  morning_alarm_weekdays_only:
+    name: Morning Alarm Weekdays Only
+
+binary_sensor:
+  - platform: workday
+    country: DE
+
+camera:
+  - platform: ffmpeg
+    input: !secret camera_input_hallway
+    name: "Hallway"
+  - platform: ffmpeg
+    input: !secret camera_input_livingroom
+    name: "LivingRoom"

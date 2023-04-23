@@ -1,0 +1,26 @@
+- name: Rolladen Buero Current Position
+  state: "{{ state_attr('cover.rolladen_buero', 'current_position') | float(0) }}"
+  availability: "{{ state_attr('cover.rolladen_buero', 'current_position') | is_number() }}"
+  unit_of_measurement: "%"
+  state_class: measurement
+
+- name: "Highest covers position"
+  unique_id: highest_covers_position
+  state: >-
+    {{
+      [ state_attr('cover.rolladen_buero', 'current_position'),
+        state_attr('cover.rolladen_kuche', 'current_position'),
+        state_attr('cover.rolladen_schlafzimmer', 'current_position'),
+        state_attr('cover.rolladen_wohnen', 'current_position'),
+      ] | map('float', 0) | max
+    }}
+  availability: >-
+    {{
+      [ state_attr('cover.rolladen_buero', 'current_position'),
+        state_attr('cover.rolladen_kuche', 'current_position'),
+        state_attr('cover.rolladen_schlafzimmer', 'current_position'),
+        state_attr('cover.rolladen_wohnen', 'current_position'),
+      ] | map('is_number') | min
+    }}
+  unit_of_measurement: "%"
+  state_class: measurement

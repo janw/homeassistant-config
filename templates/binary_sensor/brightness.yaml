@@ -1,0 +1,85 @@
+- name: "Bedroom Brightness too high"
+  unique_id: bedroom_brightness_too_high
+  state: >-
+    {{
+      states('sensor.bedroom_brightness_over_60_minutes') | float(0) >
+      states('input_number.all_rooms_brightness_threshold') | float(0)
+    }}
+  availability: >-
+    {{
+      [ states('sensor.bedroom_brightness_over_60_minutes'),
+        states('input_number.all_rooms_brightness_threshold'),
+      ] | map('is_number') | min
+    }}
+  device_class: light
+
+- name: "LivingRoom Brightness too high"
+  unique_id: livingroom_brightness_too_high
+  state: >-
+    {{
+      states('sensor.livingroom_brightness_over_60_minutes') | float(0) >
+      states('input_number.all_rooms_brightness_threshold') | float(0)
+    }}
+  availability: >-
+    {{
+      [ states('sensor.livingroom_brightness_over_60_minutes'),
+        states('input_number.all_rooms_brightness_threshold'),
+      ] | map('is_number') | min
+    }}
+  device_class: light
+
+- name: "Office Brightness too high"
+  unique_id: office_brightness_too_high
+  state: >-
+    {{
+      states('sensor.office_brightness_over_60_minutes') | float(0) >
+      states('input_number.all_rooms_brightness_threshold') | float(0)
+    }}
+  availability: >-
+    {{
+      [ states('sensor.office_brightness_over_60_minutes'),
+        states('input_number.all_rooms_brightness_threshold'),
+      ] | map('is_number') | min
+    }}
+  device_class: light
+
+- name: "Kitchen Brightness too high"
+  unique_id: kitchen_brightness_too_high
+  state: >-
+    {{
+      states('sensor.kitchen_brightness_over_60_minutes') | float(0) >
+      states('input_number.all_rooms_brightness_threshold') | float(0)
+    }}
+  availability: >-
+    {{
+      [ states('sensor.kitchen_brightness_over_60_minutes'),
+        states('input_number.all_rooms_brightness_threshold'),
+      ] | map('is_number') | min
+    }}
+  device_class: light
+
+- name: Office Brightness Below Min Threshold
+  state: >-
+    {{
+      states('sensor.office_brightness_illuminance_lux') | float(0)
+      < states('input_number.office_minimum_brightness') | float(0)
+    }}
+  availability: >-
+    {{
+      [ states('sensor.office_brightness_illuminance_lux'),
+        states('input_number.office_minimum_brightness'),
+      ] | map('is_number') | min
+    }}
+
+- name: Office Brightness Above Max Threshold
+  state: >-
+    {{
+      states('sensor.office_brightness_illuminance_lux') | float(0)
+      > states('input_number.office_maximum_brightness') | float(0)
+    }}
+  availability: >-
+    {{
+      [ states('sensor.office_brightness_illuminance_lux'),
+        states('input_number.office_maximum_brightness'),
+      ] | map('is_number') | min
+    }}

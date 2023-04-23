@@ -1,0 +1,66 @@
+wakeup_settings:
+  alias: Wakeup Settings
+  icon: mdi:weather-sunset-up
+  mode: single
+  sequence:
+    - service: media_player.unjoin
+      data: {}
+      target:
+        entity_id: media_player.bedroom
+    - service: media_player.shuffle_set
+      target:
+        entity_id: media_player.bedroom
+      data:
+        shuffle: true
+    - service: media_player.volume_set
+      target:
+        entity_id: media_player.bedroom
+      data:
+        volume_level: 0.1
+    - service: media_player.select_source
+      data:
+        source: Morning Chill
+      target:
+        entity_id: media_player.bedroom
+    - service: sonos.set_sleep_timer
+      target:
+        entity_id: media_player.bedroom
+      data:
+        sleep_time: 7200
+    - service: cover.set_cover_position
+      data:
+        position: 60
+      target:
+        area_id: 8b06ddeee69b0ecb5c980feec19d9690
+    - service: input_boolean.turn_off
+      data: {}
+      target:
+        entity_id: input_boolean.night_mode
+    - delay:
+        hours: 0
+        minutes: 1
+        seconds: 0
+        milliseconds: 0
+    - choose:
+        - conditions:
+            - condition: numeric_state
+              entity_id: sun.sun
+              below: "5"
+              attribute: elevation
+          sequence:
+            - service: light.turn_on
+              data:
+                brightness_pct: 100
+                transition: 300
+              target:
+                area_id: 8b06ddeee69b0ecb5c980feec19d9690
+            - delay:
+                hours: 2
+                minutes: 0
+                seconds: 0
+                milliseconds: 0
+            - service: light.turn_off
+              data: {}
+              target:
+                area_id: 8b06ddeee69b0ecb5c980feec19d9690
+      default: []

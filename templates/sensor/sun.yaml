@@ -1,0 +1,11 @@
+- name: Sun Elevation
+  state: "{{ state_attr('sun.sun', 'elevation') | float(0) }}"
+  availability: "{{ state_attr('sun.sun', 'elevation') | is_number() }}"
+  unit_of_measurement: "°"
+  state_class: measurement
+
+- name: Sun Azimuth
+  state: "{{ state_attr('sun.sun', 'azimuth') | float(0) }}"
+  availability: "{{ state_attr('sun.sun', 'azimuth') | is_number() }}"
+  unit_of_measurement: "°"
+  state_class: measurement
