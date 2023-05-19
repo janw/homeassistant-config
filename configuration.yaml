@@ -1,6 +1,3 @@
-# Configure a default setup of Home Assistant (frontend, api, etc)
-default_config:
-
 homeassistant:
   name: !secret homeassistant_name
   latitude: !secret homeassistant_latitude
@@ -12,12 +9,14 @@ homeassistant:
   allowlist_external_dirs: []
   customize: !include customize.yaml
 
+default_config:
 frontend:
   themes: !include_dir_merge_named themes
 
 recorder:
-  auto_purge: false
   db_url: !secret recorder_db_url
+  auto_purge: true
+  purge_keep_days: 65
   commit_interval: 0
   exclude:
     domains:
