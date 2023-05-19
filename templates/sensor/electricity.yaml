@@ -22,10 +22,13 @@
   unique_id: electricity_power
   state: >-
     {{
-      [ states('sensor.p1_power'),
-        states('sensor.p2_power'),
-        states('sensor.p3_power'),
-      ] | map('float', 0) | sum
+      max([
+        [ states('sensor.p1_power'),
+          states('sensor.p2_power'),
+          states('sensor.p3_power'),
+        ] | map('float', 0) | sum,
+        0
+      ])
     }}
   availability: >-
     {{
