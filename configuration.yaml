@@ -86,10 +86,6 @@ input_boolean:
   morning_alarm_weekdays_only:
     name: Morning Alarm Weekdays Only
 
-binary_sensor:
-  - platform: workday
-    country: DE
-
 camera:
   - platform: ffmpeg
     input: !secret camera_input_hallway
