@@ -18,8 +18,8 @@ wakeup_settings:
       data:
         volume_level: 0.1
     - service: media_player.select_source
-      data:
-        source: Morning Chill
+      data_template:
+        source: "{{ states('input_text.wakeup_sonos_source') }}"
       target:
         entity_id: media_player.bedroom
     - service: sonos.set_sleep_timer
