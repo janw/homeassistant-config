@@ -1,11 +1,3 @@
-co2_saved_with_green_electricity_daily:
-  source: sensor.co2_saved_with_green_electricity
-  cycle: daily
-
-co2_saved_with_green_electricity_monthly:
-  source: sensor.co2_saved_with_green_electricity
-  cycle: monthly
-
 office_desk_setup_energy_daily:
   source: sensor.office_desk_setup_energy
   cycle: daily

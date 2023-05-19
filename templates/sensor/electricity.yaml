@@ -18,21 +18,6 @@
   device_class: energy
   state_class: total_increasing
 
-- name: "CO2 saved with green electricity"
-  unique_id: co2_saved_with_green_electricity
-  state: >-
-    {{ states('sensor.electricity_consumption') | float(0)
-      * (states('sensor.co2_intensity') | float(0)) * 0.001
-    }}
-  availability: >-
-    {{
-      [ states('sensor.electricity_consumption'),
-        states('sensor.co2_intensity'),
-      ] | map('is_number') | min
-    }}
-  unit_of_measurement: kgCO2eq
-  state_class: total_increasing
-
 - name: "Electricity Power"
   unique_id: electricity_power
   state: >-
