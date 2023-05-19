@@ -1,0 +1,16 @@
+# electricity_power_covered_by_pv: Bool identifying if the
+# current power used in the flat is fully covered by the PV.
+- name: "Electricity Power Covered by PV"
+  unique_id: electricity_power_covered_by_pv
+  state: >-
+    {{
+      states('sensor.electricity_raw_power_used') | float
+      <=
+      states('sensor.photovoltaics_switch_0_power') | float
+    }}
+  availability: >-
+    {{
+      [ states('sensor.electricity_raw_power_used'),
+        states('sensor.photovoltaics_switch_0_power'),
+      ] | map('is_number') | min
+    }}

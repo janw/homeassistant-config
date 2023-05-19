@@ -1,3 +1,5 @@
+# electricity_power: Three-phase power measurement at the
+# flat's meter, summed up.
 - name: "Electricity Consumption"
   unique_id: electricity_consumption
   state: >-
@@ -18,6 +20,10 @@
   device_class: energy
   state_class: total_increasing
 
+
+# electricity_power: Three-phase power measurement at the
+# flat's meter, summed up and robust against negative values
+# (i.e. not accounting for grid export).
 - name: "Electricity Power"
   unique_id: electricity_power
   state: >-
@@ -48,4 +54,95 @@
       states('input_text.kilowatt_hour_rate_in_cents') | float(0) / 100
     }}
   unit_of_measurement: €/kWh
+  state_class: measurement
+
+
+# electricity_grid_power_export: Power that's being exported
+# out to the grid from the PV (overage that is not used).
+- name: "Electricity Grid Power Export"
+  unique_id: electricity_grid_power_export
+  state: >-
+    {{ min([
+          [ states('sensor.p1_power'),
+            states('sensor.p2_power'),
+            states('sensor.p3_power'),
+          ] | map('float', 0) | sum,
+          0
+      ]) * -1
+    }}
+  availability: >-
+    {{
+      [ states('sensor.p1_power'),
+        states('sensor.p2_power'),
+        states('sensor.p3_power'),
+      ] | map('is_number') | min
+    }}
+  unit_of_measurement: W
+  device_class: power
+  state_class: measurement
+
+
+# electricity_raw_power_used: The raw power usage, with the
+# PV influence removed. This is what we actually use at any
+# given time.
+- name: "Electricity Raw Power Used"
+  unique_id: electricity_raw_power_used
+  state: >-
+    {{
+      [
+        states('sensor.p1_power'),
+        states('sensor.p2_power'),
+        states('sensor.p3_power'),
+        states('sensor.photovoltaics_switch_0_power'),
+      ] | map('float', 0) | sum
+    }}
+  availability: >-
+    {{
+      [ states('sensor.p1_power'),
+        states('sensor.p2_power'),
+        states('sensor.p3_power'),
+        states('sensor.photovoltaics_switch_0_power'),
+      ] | map('is_number') | min
+    }}
+  unit_of_measurement: W
+  device_class: power
+  state_class: measurement
+
+
+# photovoltaics_power_used: The PV-produced power that we're
+# using up at a given time.
+- name: "Photovoltaics Power Used"
+  unique_id: photovoltaics_power_used
+  state: >-
+    {{
+      states('sensor.photovoltaics_switch_0_power') | float
+      - states('sensor.electricity_grid_power_export') | float
+    }}
+  availability: >-
+    {{
+      [ states('sensor.photovoltaics_switch_0_power'),
+        states('sensor.electricity_grid_power_export'),
+      ] | map('is_number') | min
+    }}
+  unit_of_measurement: W
+  device_class: power
+  state_class: measurement
+
+# photovoltaics_usage_coverage: Percentage of energy usage that
+# is covered by the PV since we installed it.
+- name: "Photovoltaics Usage Coverage"
+  unique_id: photovoltaics_usage_coverage
+  state: >-
+    {{
+      states('sensor.photovoltaics_energy_used_all_time') | float
+      / states('sensor.electricity_raw_energy_used_all_time') | float
+      * 100
+    }}
+  availability: >-
+    {{
+      [ states('sensor.photovoltaics_energy_used_all_time'),
+        states('sensor.electricity_raw_energy_used_all_time'),
+      ] | map('is_number') | min
+    }}
+  unit_of_measurement: '%'
   state_class: measurement

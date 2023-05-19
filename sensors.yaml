@@ -47,3 +47,33 @@
   type: time
   start: "{{ now().replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(hours=1) }}"
   end: "{{ now().replace(hour=23, minute=59, second=59, microsecond=0) - timedelta(hours=1) }}"
+
+- platform: integration
+  source: sensor.photovoltaics_power_used
+  name: photovoltaics_energy_used
+  unit_prefix: k
+  round: 2
+  method: left
+
+- platform: integration
+  source: sensor.electricity_raw_power_used
+  name: electricity_raw_energy_used
+  unit_prefix: k
+  round: 2
+  method: left
+
+- platform: history_stats
+  name: this_month_power_usage_covered_by_pv
+  entity_id: binary_sensor.electricity_power_covered_by_pv
+  state: "on"
+  type: time
+  start: "{{ now().replace(day=1, hour=0, minute=0, second=0, microsecond=0 ) }}"
+  end: "{{ now() }}"
+
+- platform: history_stats
+  name: last_month_power_usage_covered_by_pv
+  entity_id: binary_sensor.electricity_power_covered_by_pv
+  state: "on"
+  type: time
+  start: "{{ now().replace(day=1, month=now().month-1, hour=0, minute=0, second=0, microsecond=0) }}"
+  end: "{{ now().replace(day=1, hour=0, minute=0, second=0, microsecond=0) }}"
