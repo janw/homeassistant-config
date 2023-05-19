@@ -833,14 +833,37 @@
     data:
       addon: core_letsencrypt
   mode: single
-- id: '1682193059974'
-  alias: Create Backup Nightly
+- id: '1682257914997'
+  alias: 'AutoBackup: Daily Backup'
   description: ''
   trigger:
-  - platform: time
-    at: 03:00:00
-  condition: []
+    platform: time
+    at: 02:30:00
+  condition:
+    condition: time
+    weekday:
+    - tue
+    - wed
+    - thu
+    - fri
+    - sat
+    - sun
   action:
-  - service: hassio.backup_full
-    data: {}
-  mode: single
+    service: auto_backup.backup_full
+    data:
+      name: DailyBackup {{ now().strftime('%Y-%m-%d') }}
+      keep_days: 7
+- id: '1682257986264'
+  alias: 'AutoBackup: Weekly Backup'
+  trigger:
+  - platform: time
+    at: 02:30:00
+  condition:
+  - condition: time
+    weekday:
+    - mon
+  action:
+  - service: auto_backup.backup_full
+    data:
+      name: WeeklyBackup {{ now().strftime('%Y-%m-%d') }}
+      keep_days: 90
