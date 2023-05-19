@@ -60,28 +60,7 @@ http:
     - "172.30.32.0/23"
   use_x_forwarded_for: true
 
-utility_meter:
-  co2_saved_with_green_electricity_daily:
-    source: sensor.co2_saved_with_green_electricity
-    cycle: daily
-  co2_saved_with_green_electricity_monthly:
-    source: sensor.co2_saved_with_green_electricity
-    cycle: monthly
-  office_desk_setup_energy_daily:
-    source: sensor.office_desk_setup_energy
-    cycle: daily
-  tv_setup_energy_daily:
-    source: sensor.tv_setup_energy
-    cycle: daily
-  ups_plug_total_consumption_daily:
-    source: sensor.ups_plug_total_consumption
-    cycle: daily
-  electricity_consumption_monthly:
-    source: sensor.electricity_consumption
-    cycle: monthly
-  electricity_consumption_yearly:
-    source: sensor.electricity_consumption
-    cron: 0 0 1 6 * # Yearly from June 1
+utility_meter: !include utility_meter.yaml
 
 group: !include groups.yaml
 scene: !include scenes.yaml

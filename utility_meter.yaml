@@ -1,0 +1,33 @@
+co2_saved_with_green_electricity_daily:
+  source: sensor.co2_saved_with_green_electricity
+  cycle: daily
+
+co2_saved_with_green_electricity_monthly:
+  source: sensor.co2_saved_with_green_electricity
+  cycle: monthly
+
+office_desk_setup_energy_daily:
+  source: sensor.office_desk_setup_energy
+  cycle: daily
+
+tv_setup_energy_daily:
+  source: sensor.tv_setup_energy
+  cycle: daily
+
+ups_plug_total_consumption_daily:
+  source: sensor.ups_plug_total_consumption
+  cycle: daily
+
+electricity_consumption_monthly:
+  source: sensor.electricity_consumption
+  cycle: monthly
+
+electricity_consumption_yearly:
+  source: sensor.electricity_consumption
+  cron: 0 0 1 6 * # Yearly from June 1
+
+photovoltaics_energy_used_all_time:
+  source: sensor.photovoltaics_energy_used
+
+electricity_raw_energy_used_all_time:
+  source: sensor.electricity_raw_energy_used
