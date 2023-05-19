@@ -1,0 +1,73 @@
+- id: '1656868274085'
+  mode: single
+  alias: 'Kitchen: Control Sonos from multi-switch '
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.kitchen_round_multiswitch_action
+    to: arrow_right_click
+    id: arrow_right_click
+  - platform: state
+    entity_id:
+    - sensor.kitchen_round_multiswitch_action
+    to: arrow_left_click
+    id: arrow_left_click
+  - platform: state
+    entity_id:
+    - sensor.kitchen_round_multiswitch_action
+    to: brightness_up_click
+    id: brightness_up_click
+  - platform: state
+    entity_id:
+    - sensor.kitchen_round_multiswitch_action
+    to: brightness_down_click
+    id: brightness_down_click
+  - platform: state
+    entity_id:
+    - sensor.kitchen_round_multiswitch_action
+    to: toggle
+    id: toggle
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: arrow_right_click
+      sequence:
+      - service: media_player.media_next_track
+        data: {}
+        target:
+          device_id: aeb8fa1ce7a3c58faeeddbc99af49cdd
+    - conditions:
+      - condition: trigger
+        id: arrow_left_click
+      sequence:
+      - service: media_player.media_previous_track
+        data: {}
+        target:
+          device_id: aeb8fa1ce7a3c58faeeddbc99af49cdd
+    - conditions:
+      - condition: trigger
+        id: brightness_up_click
+      sequence:
+      - service: media_player.volume_up
+        data: {}
+        target:
+          device_id: aeb8fa1ce7a3c58faeeddbc99af49cdd
+    - conditions:
+      - condition: trigger
+        id: brightness_down_click
+      sequence:
+      - service: media_player.volume_down
+        data: {}
+        target:
+          device_id: aeb8fa1ce7a3c58faeeddbc99af49cdd
+    - conditions:
+      - condition: trigger
+        id: toggle
+      sequence:
+      - service: media_player.media_play_pause
+        data: {}
+        target:
+          device_id: aeb8fa1ce7a3c58faeeddbc99af49cdd

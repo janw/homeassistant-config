@@ -84,9 +84,11 @@ utility_meter:
     cron: 0 0 1 6 * # Yearly from June 1
 
 group: !include groups.yaml
-automation: !include automations.yaml
 scene: !include scenes.yaml
 sensor: !include sensors.yaml
+
+automation ui: !include automations.yaml
+automation manual: !include_dir_merge_named automations/
 
 script manual: !include_dir_merge_named scripts/
 script ui: !include scripts.yaml
