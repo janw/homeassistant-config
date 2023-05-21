@@ -800,28 +800,6 @@
       message: Somebody is arriving home
       data: {}
   mode: single
-- id: '1681035985330'
-  alias: 'Fallback: Down for the night'
-  description: Fallback automation, when we left the lights on and/or the covers open
-  trigger:
-  - platform: time
-    at: 01:00:00
-  condition:
-  - condition: state
-    entity_id: input_boolean.visitors_mode
-    state: 'off'
-  action:
-  - service: light.turn_off
-    data: {}
-  - if:
-    - condition: numeric_state
-      entity_id: sensor.highest_covers_position
-      above: 20
-    then:
-    - service: cover.set_cover_position
-      data_template:
-        position: '{{ states(''input_number.bedtime_cover_position'') | int }}'
-  mode: single
 - id: '1682192291666'
   alias: 'Let''s Encrypt: Renew Cert'
   description: ''
@@ -940,3 +918,23 @@
         entity_id: light.hallway_group_ceiling
         type: brightness_increase
   mode: restart
+- id: '1684568892057'
+  alias: 'All: Turn all off during the night'
+  description: ''
+  trigger:
+  - platform: time
+    at: 00:30:00
+  condition:
+  - condition: state
+    entity_id: input_boolean.visitors_mode
+    state: 'off'
+  action:
+  - service: light.turn_off
+    data:
+      entity_id: all
+  - service: cover.set_cover_position
+    data_template:
+      position: '{{ states(''input_number.bedtime_cover_position'') | int }}'
+    enabled: true
+    entity_id: all
+  mode: single
