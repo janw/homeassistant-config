@@ -21,5 +21,38 @@ electricity_consumption_yearly:
 photovoltaics_energy_used_all_time:
   source: sensor.photovoltaics_energy_used
 
+photovoltaics_energy_used_monthly:
+  source: sensor.photovoltaics_energy_used
+  cycle: monthly
+
+photovoltaics_energy_used_daily:
+  source: sensor.photovoltaics_energy_used
+  cycle: daily
+
+photovoltaics_energy_produced_monthly:
+  source: sensor.photovoltaics_switch_0_energy
+  cycle: monthly
+
+photovoltaics_energy_produced_daily:
+  source: sensor.photovoltaics_switch_0_energy
+  cycle: daily
+
+photovoltaics_energy_exported_all_time:
+  source: sensor.photovoltaics_energy_exported
+
+photovoltaics_energy_exported_monthly:
+  source: sensor.photovoltaics_energy_exported
+  cycle: monthly
+
+photovoltaics_energy_exported_daily:
+  source: sensor.photovoltaics_energy_exported
+  cycle: daily
+
 electricity_raw_energy_used_all_time:
   source: sensor.electricity_raw_energy_used
+
+electricity_grid_energy_raw_all_time:
+  source: sensor.electricity_grid_energy_raw
+
+electricity_grid_energy_all_time:
+  source: sensor.electricity_grid_energy

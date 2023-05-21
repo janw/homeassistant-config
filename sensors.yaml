@@ -56,8 +56,29 @@
   method: left
 
 - platform: integration
+  source: sensor.electricity_power
+  name: electricity_grid_energy
+  unit_prefix: k
+  round: 2
+  method: left
+
+- platform: integration
+  source: sensor.electricity_grid_power_raw
+  name: electricity_grid_energy_raw
+  unit_prefix: k
+  round: 2
+  method: left
+
+- platform: integration
   source: sensor.electricity_raw_power_used
   name: electricity_raw_energy_used
+  unit_prefix: k
+  round: 2
+  method: left
+
+- platform: integration
+  source: sensor.electricity_grid_power_export
+  name: photovoltaics_energy_exported
   unit_prefix: k
   round: 2
   method: left

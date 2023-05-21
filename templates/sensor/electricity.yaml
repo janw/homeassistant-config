@@ -47,6 +47,28 @@
   device_class: power
   state_class: measurement
 
+# electricity_grid_power_raw: Three-phase power measurement at the
+# flat's meter, summed up (not accounting for grid export, therfore can become negative)
+- name: "Electricity Grid Power Raw"
+  unique_id: electricity_grid_power_raw
+  state: >-
+    {{
+        [ states('sensor.p1_power'),
+          states('sensor.p2_power'),
+          states('sensor.p3_power'),
+        ] | map('float', 0) | sum
+    }}
+  availability: >-
+    {{
+      [ states('sensor.p1_power'),
+        states('sensor.p2_power'),
+        states('sensor.p3_power'),
+      ] | map('is_number') | min
+    }}
+  unit_of_measurement: W
+  device_class: power
+  state_class: measurement
+
 - name: "Kilowatt-hour Rate"
   unique_id: kilowatt_hour_rate
   state: >-
@@ -145,4 +167,143 @@
       ] | map('is_number') | min
     }}
   unit_of_measurement: '%'
+  state_class: measurement
+
+
+# photovoltaics_selfusage: Percentage of energy produced by
+# the PV that we use ourselves (i.e. does not go into the grid).
+- name: "Photovoltaics Self-Usage"
+  unique_id: photovoltaics_self_usage
+  state: >-
+    {{
+      states('sensor.photovoltaics_energy_used_all_time') | float
+      / states('sensor.photovoltaics_switch_0_energy') | float
+      * 100
+    }}
+  availability: >-
+    {{
+      [ states('sensor.photovoltaics_energy_used_all_time'),
+        states('sensor.photovoltaics_switch_0_energy'),
+      ] | map('is_number') | min
+    }}
+  unit_of_measurement: '%'
+  state_class: measurement
+
+
+# photovoltaics_electricity_cost_saved_all_time: Electricity
+# cost saved during the lifetime of the PV setup
+- name: "Photovoltaics Electricity Cost Saved All Time"
+  unique_id: photovoltaics_electricity_cost_saved_all_time
+  state: >-
+    {{
+      states('sensor.photovoltaics_energy_used_all_time') | float
+      * states('sensor.kilowatt_hour_rate') | float
+    }}
+  availability: >-
+    {{
+      [ states('sensor.photovoltaics_energy_used_all_time'),
+        states('sensor.kilowatt_hour_rate'),
+      ] | map('is_number') | min
+    }}
+  unit_of_measurement: 'EUR'
+  device_class: monetary
+  state_class: total
+
+# photovoltaics_electricity_cost_saved_monthly: Electricity
+# cost saved with the PV setup on a monthly basis
+- name: "Photovoltaics Electricity Cost Saved Monthly"
+  unique_id: photovoltaics_electricity_cost_saved_monthly
+  state: >-
+    {{
+      states('sensor.photovoltaics_energy_used_monthly') | float
+      * states('sensor.kilowatt_hour_rate') | float
+    }}
+  availability: >-
+    {{
+      [ states('sensor.photovoltaics_energy_used_monthly'),
+        states('sensor.kilowatt_hour_rate'),
+      ] | map('is_number') | min
+    }}
+  unit_of_measurement: 'EUR'
+  device_class: monetary
+  state_class: total
+
+# photovoltaics_self_usage_monthly: Percentage of energy produced by
+# the PV that we use ourselves (i.e. does not go into the grid) on a
+# monthly basis.
+- name: "Photovoltaics Self-Usage Monthly"
+  unique_id: photovoltaics_self_usage_monthly
+  state: >-
+    {{
+      states('sensor.photovoltaics_energy_used_monthly') | float
+      / states('sensor.photovoltaics_energy_produced_monthly') | float
+      * 100
+    }}
+  availability: >-
+    {{
+      [ states('sensor.photovoltaics_energy_used_monthly'),
+        states('sensor.photovoltaics_energy_produced_monthly'),
+      ] | map('is_number') | min
+    }}
+  unit_of_measurement: '%'
+  state_class: measurement
+
+# photovoltaics_self_usage_monthly: Percentage of energy produced by
+# the PV that we use ourselves (i.e. does not go into the grid) on a
+# monthly basis.
+- name: "Photovoltaics Self-Usage Daily"
+  unique_id: photovoltaics_self_usage_daily
+  state: >-
+    {{
+      states('sensor.photovoltaics_energy_used_daily') | float
+      / states('sensor.photovoltaics_energy_produced_daily') | float
+      * 100
+    }}
+  availability: >-
+    {{
+      [ states('sensor.photovoltaics_energy_used_daily'),
+        states('sensor.photovoltaics_energy_produced_daily'),
+      ] | map('is_number') | min
+    }}
+  unit_of_measurement: '%'
+  state_class: measurement
+
+# electricity_grid_consumption_measurement_offset: Difference
+# between the constructed value of raw grid usage over time
+# (integrated from the raw power usage of the Shelly 3EM) and
+# the Shelly 3EM's energy reading.
+- name: "Electricity Grid Consumption Measurement Offset Raw"
+  unique_id: electricity_grid_consumption_measurement_offset_raw
+  state: >-
+    {{
+      states('sensor.electricity_grid_energy_raw_all_time') | float
+      - states('sensor.electricity_consumption') | float
+    }}
+  availability: >-
+    {{
+      [ states('sensor.electricity_grid_energy_raw_all_time'),
+        states('sensor.electricity_consumption'),
+      ] | map('is_number') | min
+    }}
+  unit_of_measurement: 'kWh'
+  state_class: measurement
+
+# electricity_grid_consumption_measurement_offset: Difference
+# between the constructed value of raw grid usage over time
+# (integrated from the zero-limited power usage of the Shelly
+# 3EM) and the Shelly 3EM's energy reading.
+- name: "Electricity Grid Consumption Measurement Offset"
+  unique_id: electricity_grid_consumption_measurement_offset
+  state: >-
+    {{
+      states('sensor.electricity_grid_energy_all_time') | float
+      - states('sensor.electricity_consumption') | float
+    }}
+  availability: >-
+    {{
+      [ states('sensor.electricity_grid_energy_all_time'),
+        states('sensor.electricity_consumption'),
+      ] | map('is_number') | min
+    }}
+  unit_of_measurement: 'kWh'
   state_class: measurement
