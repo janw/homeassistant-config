@@ -98,3 +98,6 @@
   type: time
   start: "{{ now().replace(day=1, month=now().month-1, hour=0, minute=0, second=0, microsecond=0) }}"
   end: "{{ now().replace(day=1, hour=0, minute=0, second=0, microsecond=0) }}"
+
+- platform: dwd_weather_warnings
+  region_name: !secret dwd_weather_warnings_region_name
