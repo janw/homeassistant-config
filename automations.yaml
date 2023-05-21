@@ -185,7 +185,8 @@
     data:
       transition: 2
     target:
-      entity_id: scene.lively
+      entity_id:
+      - scene.living_room_very_dim
   mode: single
 - id: '1644701147979'
   alias: 'All: Covers calibrate and open at dawn'

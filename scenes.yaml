@@ -581,3 +581,66 @@
       state: 'on'
   icon: mdi:brightness-7
   metadata: {}
+- id: '1684523726709'
+  name: 'Living Room: Very Dim'
+  entities:
+    light.livingroom_floor_lamp:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 4000
+      min_mireds: 250
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      color_mode: color_temp
+      brightness: 139
+      color_temp_kelvin: 2202
+      color_temp: 454
+      hs_color:
+      - 29.79
+      - 84.553
+      rgb_color:
+      - 255
+      - 146
+      - 39
+      xy_color:
+      - 0.579
+      - 0.388
+      linkquality: 63
+      power_on_behavior:
+      update:
+        installed_version: 587814449
+        latest_version: 587814449
+        state: idle
+      update_available: false
+      friendly_name: livingroom_floor_lamp
+      supported_features: 44
+      state: 'on'
+    light.livingroom_ceiling_lamp:
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - brightness
+      linkquality: 51
+      power_on_behavior:
+      update:
+        installed_version: 16785162
+        latest_version: 16785162
+        state: idle
+      update_available: false
+      friendly_name: livingroom_ceiling_lamp
+      supported_features: 44
+      state: 'off'
+  icon: mdi:brightness-7
+  metadata: {}
